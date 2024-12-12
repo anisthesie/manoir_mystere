@@ -25,6 +25,28 @@ public class Game {
                 "Droite pour aller à droite.");
     }
 
+    public void printMap() {
+
+        Room currentRoom = getPlayer().getCurrentRoom();
+        String positionJoueur = currentRoom.getName();
+
+        System.out.println("Carte du Manoir :\n");
+
+        System.out.println("           +------------+");
+        System.out.println("           |  " + (positionJoueur.equals(getChambre().getName()) ? "   🏃 " : getChambre().getName()) + "   |");
+        System.out.println("           +------------+");
+        System.out.println("+------------+------------+------------+");
+        System.out.println("| " + (positionJoueur.equals(getBibliotheque().getName()) ? "  🏃  " : getBibliotheque().getName()) + "  |  "
+                + (positionJoueur.equals(getHall().getName()) ? "🏃" : getHall().getName()) + "  |   "
+                + (positionJoueur.equals(getCuisine().getName()) ? "  🏃  " : getCuisine().getName()) + "   |");
+        System.out.println("+------------+------------+------------+");
+        System.out.println("           +------------+");
+        System.out.println("           |  " + (positionJoueur.equals(getSousSol().getName()) ? "   🏃  " : getSousSol().getName()) + "  |");
+        System.out.println("           +------------+\n");
+
+
+    }
+
     public Room[] getRooms() {
         return rooms;
     }
