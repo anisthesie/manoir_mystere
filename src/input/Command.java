@@ -7,6 +7,7 @@ public enum Command {
     BAS,
     GAUCHE,
     DROITE,
+    POMME,
     UNKNOWN_COMMAND;
 
     public static Command parseCommand(String commandWord) {

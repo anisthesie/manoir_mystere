@@ -20,10 +20,10 @@ public class Game {
                 new Cuisine(),
                 new SousSol()};
 
-        this.requiredKeys = 1;
-        this.parser = new Parser();
+        this.requiredKeys = 2;
         this.maxFear = 5;
-        this.player = new Player(0, 3, 0, getHall(), this);
+        this.parser = new Parser();
+        this.player = new Player(0, 3, 0, 3, 6, getHall(), this);
     }
 
     public Game(Player player, Room[] rooms, int maxFear, Parser parser, int requiredKeys) {
@@ -36,19 +36,9 @@ public class Game {
 
     public void start() {
         System.out.println(System.lineSeparator().repeat(50));
-        printIntroduction();
+        //printIntroduction();
+        waitForKey();
 
-        System.out.println("Continuer? (Oui/Non)");
-        Command commande = parser.getCommand();
-        while (commande != Command.OUI && commande != Command.NON) {
-            System.out.println("Je ne comprends pas ce que vous voulez faire.\n" +
-                    "Taper Oui pour continuer, Non pour quitter.");
-            commande = parser.getCommand();
-        }
-        if (commande == Command.NON) {
-            System.out.println("Au revoir!");
-            return;
-        }
         gameLoop();
     }
 
@@ -58,9 +48,10 @@ public class Game {
 
             printMap();
             printInterface();
-            System.out.println("Pour vous déplacer, taper la direction souhaitée (Haut, Bas, Gauche, Droite).\n");
+            System.out.println("\nPour vous déplacer, taper la direction souhaitée (Haut, Bas, Gauche, Droite).");
+            System.out.println("Pour manger une pomme, taper Pomme.\n");
 
-            Command commande = waitForDirection();
+            Command commande = waitForInput();
             switch (commande) {
                 case HAUT:
                     getPlayer().enterRoom(getChambre());
@@ -73,6 +64,10 @@ public class Game {
                     break;
                 case DROITE:
                     getPlayer().enterRoom(getCuisine());
+                    break;
+                case POMME:
+                    getPlayer().eatApple();
+                    waitForKey();
                     break;
             }
 
@@ -134,17 +129,25 @@ public class Game {
 
     }
 
-    private void printInterface() {
+    public void printInterface() {
         System.out.println("Votre niveau de peur : " + getPlayer().getFearLevel() + "/" + maxFear);
-        System.out.println("Votre pièce actuelle : " + getPlayer().getCurrentRoom().getName() + ", " + getPlayer().getCurrentRoom().getDescription() + ".");
+        System.out.println("Nombre de pommes restantes : " + getPlayer().getAppleCount() + "/" + getPlayer().getMaxApples());
+        System.out.println("Nombre de clés trouvées : " + getPlayer().getKeys() + "/" + requiredKeys);
+        System.out.println("Votre pièce actuelle : " + getPlayer().getCurrentRoom().getName() + ", " + getPlayer().getCurrentRoom().getDescription() + ".\n");
         System.out.println(player.getCurrentRoom().getCharacteristic());
     }
 
-    public Command waitForDirection() {
+    public void waitForKey() {
+        System.out.println("Appuyez sur Entrer pour continuer...");
+        parser.getCommand();
+    }
+
+    public Command waitForInput() {
         Command commande = parser.getCommand();
-        while (commande != Command.HAUT && commande != Command.BAS && commande != Command.GAUCHE && commande != Command.DROITE) {
+        while (commande != Command.HAUT && commande != Command.BAS && commande != Command.GAUCHE && commande != Command.DROITE && commande != Command.POMME) {
             System.out.println("Je ne comprends pas ce que vous voulez faire.\n" +
-                    "Taper Haut, Bas, Gauche ou Droite pour vous déplacer.");
+                    "Taper Haut, Bas, Gauche ou Droite pour vous déplacer.\n" +
+                    "Taper Pomme pour manger une pomme.\n");
             commande = parser.getCommand();
         }
         return commande;
@@ -152,6 +155,14 @@ public class Game {
 
     public Room[] getRooms() {
         return rooms;
+    }
+
+    public int getMaxFear() {
+        return maxFear;
+    }
+
+    public int getRequiredKeys() {
+        return requiredKeys;
     }
 
     public Room getCuisine() {

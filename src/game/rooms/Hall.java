@@ -5,7 +5,7 @@ import game.Player;
 public class Hall extends Room {
 
     public Hall() {
-        super("Hall", "L'entrée principale du manoir mystérieux.");
+        super("Hall", "l'entrée principale du manoir mystérieux.");
     }
 
     @Override

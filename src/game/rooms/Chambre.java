@@ -5,7 +5,7 @@ import game.Player;
 public class Chambre extends Room {
 
     public Chambre() {
-        super("Chambre", "Une chambre confortable mais inquiétante.");
+        super("Chambre", "une chambre confortable mais inquiétante.");
     }
 
     @Override

@@ -5,7 +5,7 @@ import game.Player;
 public class SousSol extends Room {
 
     public SousSol() {
-        super("Sous-sol", "Un endroit humide et effrayant.");
+        super("Sous-sol", "un endroit humide et effrayant.");
     }
 
     @Override
