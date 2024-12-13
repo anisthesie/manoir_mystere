@@ -1,33 +1,48 @@
 package game;
 
 import game.rooms.Room;
+import input.Command;
+import input.Parser;
 
 public class Player {
 
-    private int apple_count;
-    private int fear_level;
+    private int appleCount;
+    private int fearLevel;
     private Room currentRoom;
+    private int keys;
+    private Game game;
 
-    public Player(int apples, int fear_level, Room currentRoom) {
-        this.apple_count = apples;
-        this.fear_level = fear_level;
+    public Player(int apples, int fear_level, int keys, Room currentRoom, Game game) {
+        this.appleCount = apples;
+        this.fearLevel = fear_level;
         this.currentRoom = currentRoom;
+        this.keys = keys;
+        this.game = game;
+    }
+
+    public void enterRoom(Room room) {
+        setCurrentRoom(room);
+        room.entryEvent(this);
     }
 
     public int getAppleCount() {
-        return apple_count;
+        return appleCount;
     }
 
     public void setAppleCount(int apple_count) {
-        this.apple_count = apple_count;
+        this.appleCount = apple_count;
     }
 
     public int getFearLevel() {
-        return fear_level;
+        return fearLevel;
     }
 
     public void setFearLevel(int fear_level) {
-        this.fear_level = fear_level;
+        this.fearLevel = fear_level;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public Room getCurrentRoom() {
@@ -36,5 +51,13 @@ public class Player {
 
     public void setCurrentRoom(Room currentRoom) {
         this.currentRoom = currentRoom;
+    }
+
+    public int getKeys() {
+        return keys;
+    }
+
+    public void addKey() {
+        this.keys++;
     }
 }
