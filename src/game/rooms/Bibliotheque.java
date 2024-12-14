@@ -8,20 +8,17 @@ public class Bibliotheque extends Room {
     private boolean key, spider, apple;
 
     public Bibliotheque() {
-        super("Bibliothèque", "des étagères pleines de livres anciens.");
-        this.key = false;
-        this.spider = false;
-        this.apple = false;
+        super("Bibliothèque", "des étagères pleines de livres anciens.",
+                "Il y'a à votre gauche et à votre droite deux armoires en bois massif.\n En face de vous, une grande table avec quelque chose dessus.");
+        this.key = true;
+        this.spider = true;
+        this.apple = true;
     }
 
     @Override
-    public String getCharacteristic() {
-        return "Il y'a à votre gauche et à votre droite deux armoires en bois massif.\n " +
-                "En face de vous, une grande table avec quelque chose dessus.";
-    }
+    public void roomLoop(Player player) {
 
-    @Override
-    public void entryEvent(Player player) {
+        super.visit();
 
         while (player.getCurrentRoom().equals(this)){
             printRoom();
@@ -29,12 +26,11 @@ public class Bibliotheque extends Room {
             System.out.println("\nDéplacez-vous vers les élements de la pièce pour les inspecter.");
             System.out.println("(Gauche, Droite, Haut, Bas, Pomme)\n");
 
-            Command direction = player.getGame().waitForInput();
-            switch (direction){
+            switch (player.getGame().waitForInput()){
                 case GAUCHE:
                     System.out.println("Vous ouvrez l'armoire de gauche.");
-                    if (!key){
-                        key = true;
+                    if (key){
+                        key = false;
                         System.out.println("Vous avez trouvé une clé!");
                         player.addKey();
                         if(player.getKeys() >= player.getGame().getRequiredKeys()) {
@@ -47,8 +43,8 @@ public class Bibliotheque extends Room {
                     break;
                 case DROITE:
                     System.out.println("Vous ouvrez l'armoire de droite.");
-                    if (!spider){
-                        spider = true;
+                    if (spider){
+                        spider = false;
                         player.incrementFear();
                         System.out.println("Boo! Une araignée vous saute dessus!");
                         System.out.println("Vous avez maintenant " + player.getFearLevel() + "/"+ player.getGame().getMaxFear() +" points de peur.\n");
@@ -60,10 +56,10 @@ public class Bibliotheque extends Room {
                     break;
                 case HAUT:
                     System.out.println("Vous inspectez la table.");
-                    if (!apple){
+                    if (apple){
                         System.out.println("Vous avez trouvé une pomme!");
                         if(player.getAppleCount() < player.getMaxApples()) {
-                            apple = true;
+                            apple = false;
                             player.incrementApples();
                             System.out.println("Vous avez maintenant " + player.getAppleCount() + "/" + player.getMaxApples() + " pommes.\n");
                         } else {
@@ -77,7 +73,7 @@ public class Bibliotheque extends Room {
                     }
                     break;
                 case BAS:
-                    player.setCurrentRoom(player.getGame().getHall());
+                    player.enterRoom(player.getGame().getHall());
                     return;
                 case POMME:
                     player.eatApple();
@@ -98,9 +94,9 @@ public class Bibliotheque extends Room {
         System.out.println("           +------------+");
         System.out.println("           |    Table   |");
         System.out.println("           +------------+");
-        System.out.println("+------------+------------+------------+");
-        System.out.println("| Armoire  |     🏃     |   Armoire   |");
-        System.out.println("+------------+------------+------------+");
+        System.out.println("+----------+------------+------------+");
+        System.out.println("| Armoire  |     🏃     |   Armoire  |");
+        System.out.println("+----------+------------+------------+");
         System.out.println("           +------------+");
         System.out.println("           |   Revenir  |");
         System.out.println("           +------------+\n");

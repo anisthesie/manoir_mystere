@@ -35,7 +35,7 @@ public class Player {
 
     public void enterRoom(Room room) {
         setCurrentRoom(room);
-        room.entryEvent(this);
+        room.roomLoop(this);
     }
 
     public int getAppleCount() {

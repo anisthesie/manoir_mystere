@@ -5,7 +5,7 @@ import input.Parser;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Bienvenu au Manoir Mystère!\n " +
+        System.out.println("\nBienvenu au Manoir Mystère!\n " +
                 "Commencer la partie? (Oui/Non)");
 
         Parser parser = new Parser();

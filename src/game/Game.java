@@ -46,7 +46,11 @@ public class Game {
 
         while (getPlayer().getKeys() < requiredKeys && getPlayer().getFearLevel() < maxFear) {
 
-            printMap();
+            if (getChambre().canAccess(getPlayer()) && !getChambre().hasVisited()) {
+                System.out.println("\n Attention! Un bruit étrange vient de la chambre. Vous devriez y jeter un oeil immédiatement.");
+            }
+
+            getHall().printRoom();
             printInterface();
             System.out.println("\nPour vous déplacer, taper la direction souhaitée (Haut, Bas, Gauche, Droite).");
             System.out.println("Pour manger une pomme, taper Pomme.\n");
@@ -107,34 +111,12 @@ public class Game {
         }
     }
 
-    private void printMap() {
-
-        Room currentRoom = getPlayer().getCurrentRoom();
-        String positionJoueur = currentRoom.getName();
-
-        System.out.println("Carte du Manoir :\n");
-
-        System.out.println("           +------------+");
-        System.out.println("           |  " + (positionJoueur.equals(getChambre().getName()) ? "   🏃 " : getChambre().getName()) + "   |");
-        System.out.println("           +------------+");
-        System.out.println("+------------+------------+------------+");
-        System.out.println("| " + (positionJoueur.equals(getBibliotheque().getName()) ? "  🏃  " : getBibliotheque().getName()) + "  |  "
-                + (positionJoueur.equals(getHall().getName()) ? "🏃" : getHall().getName()) + "  |   "
-                + (positionJoueur.equals(getCuisine().getName()) ? "  🏃  " : getCuisine().getName()) + "   |");
-        System.out.println("+------------+------------+------------+");
-        System.out.println("           +------------+");
-        System.out.println("           |  " + (positionJoueur.equals(getSousSol().getName()) ? "   🏃  " : getSousSol().getName()) + "  |");
-        System.out.println("           +------------+\n");
-
-
-    }
-
     public void printInterface() {
         System.out.println("Votre niveau de peur : " + getPlayer().getFearLevel() + "/" + maxFear);
         System.out.println("Nombre de pommes restantes : " + getPlayer().getAppleCount() + "/" + getPlayer().getMaxApples());
         System.out.println("Nombre de clés trouvées : " + getPlayer().getKeys() + "/" + requiredKeys);
         System.out.println("Votre pièce actuelle : " + getPlayer().getCurrentRoom().getName() + ", " + getPlayer().getCurrentRoom().getDescription() + ".\n");
-        System.out.println(player.getCurrentRoom().getCharacteristic());
+        System.out.println(player.getCurrentRoom().getHint());
     }
 
     public void waitForKey() {
