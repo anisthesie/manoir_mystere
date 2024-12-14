@@ -5,17 +5,19 @@ import game.Player;
 public class Cuisine extends Room {
 
     private int apples;
+    private boolean spider;
 
     public Cuisine() {
         super("Cuisine", "une cuisine sombre, mais peut-être utile.",
                 "Tout semble vide à priori, à part pour le frigo sur votre droite.");
         apples = 3;
+        spider = true;
     }
 
     @Override
     public void roomLoop(Player player) {
 
-        super.visit();
+        super.setVisited(true);
 
         while (player.getCurrentRoom().equals(this)) {
 
@@ -26,12 +28,10 @@ public class Cuisine extends Room {
 
             switch (player.getGame().waitForInput()) {
                 case DROITE:
-                    System.out.println("Vous ouvrez le frigo.\n");
+                    System.out.println("Vous ouvrez le frigo.");
                     if (apples > 0) {
                         int applesTaken = 0;
                         for (int i = 0; i < apples; i++) {
-                            System.out.println(player.getAppleCount());
-                            System.out.println(player.getMaxApples());
                             if (player.getAppleCount() < player.getMaxApples()) {
                                 player.incrementApples();
                                 applesTaken++;
@@ -39,7 +39,7 @@ public class Cuisine extends Room {
                         }
                         apples -= applesTaken;
                         if (applesTaken > 0) {
-                            System.out.println("Vous avez pu prendre " + applesTaken + " pomme(s)");
+                            System.out.println("Vous avez pris " + applesTaken + " pomme(s) du frigo!");
                         } else {
                             System.out.println("Vous avez déjà trop de pommes sur vous.");
                         }
@@ -48,9 +48,22 @@ public class Cuisine extends Room {
                             System.out.println("Vous pouvez trouver un sac à dos pour transporter plus de pommes.\n");
 
                     } else {
-                        System.out.println("Il n'y a plus de pommes à manger.\n");
+                        System.out.println("Le frigo est vide.\n");
                     }
 
+                    break;
+                case GAUCHE:
+                    if (spider) {
+                        spider = false;
+                        player.incrementFear();
+                        System.out.println("Vous avez mis le pied dans une toile d'araignée.");
+                        System.out.println("Une araignée vous saute dessus!");
+                        System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + player.getGame().getMaxFear() + " points de peur.\n");
+                        if (player.getFearLevel() >= player.getGame().getMaxFear())
+                            return;
+                    } else {
+                        System.out.println("Rien d'intéressant ici.\n");
+                    }
                     break;
                 case BAS:
                     player.enterRoom(player.getGame().getHall());
@@ -76,7 +89,7 @@ public class Cuisine extends Room {
         System.out.println("           |            |");
         System.out.println("           +------------+");
         System.out.println("+----------+------------+------------+");
-        System.out.println("|          |     🏃     |    Frigo   |");
+        System.out.println("| *** ***  |     🏃     |    Frigo   |");
         System.out.println("+----------+------------+------------+");
         System.out.println("           +------------+");
         System.out.println("           |   Revenir  |");

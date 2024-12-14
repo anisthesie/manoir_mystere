@@ -41,8 +41,8 @@ public abstract class Room {
         return visited;
     }
 
-    public void visit() {
-        visited = true;
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
 }

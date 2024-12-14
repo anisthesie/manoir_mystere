@@ -1,4 +1,5 @@
 import game.Game;
+import game.Player;
 import input.Command;
 import input.Parser;
 

@@ -1,7 +1,6 @@
 package game.rooms;
 
 import game.Player;
-import input.Command;
 
 public class Bibliotheque extends Room {
 
@@ -18,7 +17,7 @@ public class Bibliotheque extends Room {
     @Override
     public void roomLoop(Player player) {
 
-        super.visit();
+        super.setVisited(true);
 
         while (player.getCurrentRoom().equals(this)){
             printRoom();
@@ -77,9 +76,6 @@ public class Bibliotheque extends Room {
                     return;
                 case POMME:
                     player.eatApple();
-                    break;
-                default:
-                    System.out.println("Commande invalide.");
                     break;
             }
             player.getGame().waitForKey();

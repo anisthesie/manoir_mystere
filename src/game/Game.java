@@ -36,7 +36,7 @@ public class Game {
 
     public void start() {
         System.out.println(System.lineSeparator().repeat(50));
-        //printIntroduction();
+        printIntroduction();
         waitForKey();
 
         gameLoop();
@@ -46,8 +46,9 @@ public class Game {
 
         while (getPlayer().getKeys() < requiredKeys && getPlayer().getFearLevel() < maxFear) {
 
-            if (getChambre().canAccess(getPlayer()) && !getChambre().hasVisited()) {
-                System.out.println("\n Attention! Un bruit étrange vient de la chambre. Vous devriez y jeter un oeil immédiatement.");
+            if (getChambre().canAccess(getPlayer()) && !((Chambre) getChambre()).hasAnnouncedNoise()) {
+                ((Chambre) getChambre()).announceNoise();
+                waitForKey();
             }
 
             getHall().printRoom();
@@ -77,13 +78,14 @@ public class Game {
 
         }
         if (getPlayer().getKeys() >= requiredKeys) {
-            System.out.println("Félicitations! Vous avez trouvé les deux clés et vous avez réussi à sortir du manoir.");
+            System.out.println("Félicitations! Vous avez trouvé les deux clés et avez réussi à vous échapper du manoir.");
 
         } else {
             System.out.println("Vous avez eu trop peur et vous êtes mort.");
         }
 
-        System.out.println("Merci d'avoir joué!");
+        System.out.println("Merci d'avoir joué!\n");
+        waitForKey();
 
 
     }
@@ -92,10 +94,10 @@ public class Game {
         try {
             System.out.println("Vous venez de vous réveiller dans un manoir mystérieux, vous ne savez pas comment vous êtes arrivé ici.");
             Thread.sleep(4000);
-            System.out.println("Vous avez peur, il fait froid et sombre. Vous deveez trouver une sortie.");
-            Thread.sleep(3000);
+            System.out.println("Vous avez peur, il fait froid et sombre. Vous devez trouver une sortie.");
+            Thread.sleep(4000);
             System.out.println("Ah tiens! Une lettre par terre. Vous la ramassez et lisez : \n");
-            Thread.sleep(3000);
+            Thread.sleep(4000);
             System.out.println("    Je suis Mr. Rumble Scott. Je suis enfermé dans ce manoir depuis maintenant une semaine. \n" +
                     "   Je n'ai pas réussi à trouver la sortie. Je suis terrifié.\n" +
                     "   Je vais laisser cette lettre, espérant aider le prochain malheureux à être coincé comme moi. \n" +
