@@ -64,4 +64,11 @@ public class Parser {
         }
         System.out.println();
     }
+
+    /**
+     * Clear the console screen.
+     */
+    public static void clearScreen(){
+        System.out.println(System.lineSeparator().repeat(50));
+    }
 }

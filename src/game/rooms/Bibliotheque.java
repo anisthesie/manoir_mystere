@@ -1,10 +1,28 @@
 package game.rooms;
 
+import game.Game;
 import game.Player;
+import input.Parser;
 
+/**
+ * Classe représentant la pièce de la bibliothèque.
+ */
 public class Bibliotheque extends Room {
 
-    private boolean key, spider, apple;
+    /**
+     * Indique si la clé est toujours dans la pièce.
+     */
+    private boolean key;
+
+    /**
+     * Indique si l'araignée est toujours dans la pièce.
+     */
+    private boolean spider;
+
+    /**
+     * Indique si la pomme est toujours dans la pièce.
+     */
+    private boolean apple;
 
     public Bibliotheque() {
         super("Bibliothèque", "des étagères pleines de livres anciens.",
@@ -15,76 +33,80 @@ public class Bibliotheque extends Room {
     }
 
     @Override
-    public void roomLoop(Player player) {
+    public void roomLoop(Game game) {
 
+        Player player = game.getPlayer();
         super.setVisited(true);
 
-        while (player.getCurrentRoom().equals(this)){
+        while (player.getCurrentRoom().equals(this)) {
             printRoom();
-            player.getGame().printInterface();
+            game.printInterface();
             System.out.println("\nDéplacez-vous vers les élements de la pièce pour les inspecter.");
             System.out.println("(Gauche, Droite, Haut, Bas, Pomme)\n");
 
-            switch (player.getGame().waitForInput()){
-                case GAUCHE:
+            switch (game.waitForInput()) {
+                case GAUCHE: // Armoire avec une clé
                     System.out.println("Vous ouvrez l'armoire de gauche.");
-                    if (key){
+                    if (key) {
                         key = false;
-                        System.out.println("Vous avez trouvé une clé!");
+                        System.out.println("Vous avez trouvé une clé!\n");
                         player.addKey();
-                        if(player.getKeys() >= player.getGame().getRequiredKeys()) {
+                        if (player.getKeys() >= game.getRequiredKeys()) {
                             System.out.println("Vous avez trouvé toutes les clés nécessaires pour ouvrir la porte du manoir!");
-                            System.out.println("Revenez vers le Hall pour vous échapper!");
+                            System.out.println("Revenez vers le Hall pour vous échapper!\n");
                         }
                     } else {
-                        System.out.println("L'armoire est vide.");
+                        System.out.println("L'armoire est vide.\n");
                     }
                     break;
-                case DROITE:
-                    System.out.println("Vous ouvrez l'armoire de droite.");
-                    if (spider){
+                case DROITE: // Armoire avec une araignée
+                    System.out.println("Vous ouvrez l'armoire de droite.\n");
+                    if (spider) {
                         spider = false;
                         player.incrementFear();
                         System.out.println("Boo! Une araignée vous saute dessus!");
-                        System.out.println("Vous avez maintenant " + player.getFearLevel() + "/"+ player.getGame().getMaxFear() +" points de peur.\n");
-                        if(player.getFearLevel() >= player.getGame().getMaxFear())
+                        System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + game.getMaxFear() + " points de peur.\n");
+                        if (player.getFearLevel() >= game.getMaxFear())
                             return;
                     } else {
-                        System.out.println("L'armoire est vide.");
+                        System.out.println("L'armoire est vide.\n");
                     }
                     break;
-                case HAUT:
+                case HAUT: // Table avec une pomme
                     System.out.println("Vous inspectez la table.");
-                    if (apple){
+                    if (apple) {
                         System.out.println("Vous avez trouvé une pomme!");
-                        if(player.getAppleCount() < player.getMaxApples()) {
+                        if (player.getAppleCount() < player.getMaxApples()) {
                             apple = false;
                             player.incrementApples();
                             System.out.println("Vous avez maintenant " + player.getAppleCount() + "/" + player.getMaxApples() + " pommes.\n");
                         } else {
                             System.out.println("Vous avez déjà trop de pommes, vous ne pouvez pas en prendre plus.\n");
                         }
-                        if(!player.hasBackpack())
+                        if (!player.hasBackpack())
                             System.out.println("Vous pouvez trouver un sac à dos pour transporter plus de pommes.\n");
 
                     } else {
-                        System.out.println("La table est vide.");
+                        System.out.println("La table est vide.\n");
                     }
                     break;
                 case BAS:
-                    player.enterRoom(player.getGame().getHall());
+                    game.enterRoom(game.getHall());
                     return;
                 case POMME:
-                    player.eatApple();
+                    game.eatApple();
                     break;
             }
-            player.getGame().waitForKey();
+            game.waitForKey();
         }
 
     }
 
     @Override
     public void printRoom() {
+
+        Parser.clearScreen();
+
         System.out.println("Vous êtes dans la bibliothèque :\n");
 
         System.out.println("           +------------+");
@@ -98,15 +120,4 @@ public class Bibliotheque extends Room {
         System.out.println("           +------------+\n");
     }
 
-    public boolean hasKey() {
-        return key;
-    }
-
-    public boolean hasSpider() {
-        return spider;
-    }
-
-    public boolean hasApple() {
-        return apple;
-    }
 }

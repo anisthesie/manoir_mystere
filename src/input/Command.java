@@ -1,8 +1,10 @@
 package input;
 
+/**
+ * Enumération des commandes possibles pour le jeu.
+ */
 public enum Command {
-    OUI,
-    NON,
+
     HAUT,
     BAS,
     GAUCHE,
@@ -10,6 +12,13 @@ public enum Command {
     POMME,
     UNKNOWN_COMMAND;
 
+    /**
+     * Méthode pour parser une commande à partir d'une chaîne de caractères.
+     * Utilisé dans {@link Parser#getCommand()} pour convertir l'entrée de l'utilisateur en une énumération.
+     *
+     * @param commandWord la chaîne de caractères à parser
+     * @return la commande correspondante, ou UNKNOWN_COMMAND si la commande n'existe pas
+     */
     public static Command parseCommand(String commandWord) {
         try {
             return Command.valueOf(commandWord.toUpperCase());

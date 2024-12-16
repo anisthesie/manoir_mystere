@@ -2,6 +2,9 @@ package game;
 
 import game.rooms.Room;
 
+/**
+ * Objet représentant un joueur.
+ */
 public class Player {
 
     private int appleCount;
@@ -10,100 +13,118 @@ public class Player {
     private int fearLevel;
     private Room currentRoom;
     private int keys;
-    private Game game;
 
-    public Player(int apples, int fear_level, int keys, int maxApples, int maxApplesBackpack, Room currentRoom, Game game) {
+    /**
+     * Constructeur de la classe Player.
+     *
+     * @param apples Le nombre de pommes que le joueur commence la partie avec.
+     * @param fear_level Le niveau de peur du joueur dont le joueur commence la partie avec.
+     * @param keys Le nombre de clés que le joueur possède quand la partie commence.
+     * @param maxApples Le nombre maximum de pommes que le joueur peut transporter.
+     * @param maxApplesBackpack Le nombre maximum de pommes que le joueur peut transporter avec un sac à dos.
+     * @param currentRoom La pièce dans laquelle le joueur se commence la partie.
+     */
+    public Player(int apples, int fear_level, int keys, int maxApples, int maxApplesBackpack, Room currentRoom) {
         this.appleCount = apples;
         this.fearLevel = fear_level;
         this.currentRoom = currentRoom;
         this.maxApples = maxApples;
         this.maxApplesBackpack = maxApplesBackpack;
         this.keys = keys;
-        this.game = game;
     }
 
-    public void eatApple() {
-        if(this.getAppleCount() > 0){
-            this.decrementApples();
-            this.decrementFear();
-            System.out.println("\nVous mangez une pomme.");
-            System.out.println("Vous avez maintenant " + this.getAppleCount() + " pommes et " + this.getFearLevel() + "/"+ this.getGame().getMaxFear() +" points de peur.\n");
-        } else {
-            System.out.println("Vous n'avez pas de pommes à manger.\n");
-        }
-    }
-
-    public void enterRoom(Room room) {
-        setCurrentRoom(room);
-        room.roomLoop(this);
-    }
-
+    /**
+     * @return Le nombre de pommes que le joueur possède.
+     */
     public int getAppleCount() {
         return appleCount;
     }
 
-    public void setAppleCount(int apple_count) {
-        this.appleCount = apple_count;
-    }
-
+    /**
+     * Ajoute une pomme au joueur.
+     */
     public void incrementApples() {
         appleCount++;
     }
 
+    /**
+     * Enlève une pomme au joueur.
+     */
     public void decrementApples() {
         if (appleCount > 0)
             appleCount--;
     }
 
+    /**
+     * @return {@code true} si le joueur a un sac à dos, {@code false} sinon.
+     */
     public boolean hasBackpack() {
         return maxApples == maxApplesBackpack;
     }
 
+    /**
+     * Donne un sac à dos au joueur.
+     * Augmente le nombre maximum de pommes que le joueur peut transporter.
+     */
     public void giveBackpack() {
         maxApples = maxApplesBackpack;
     }
 
+    /**
+     * @return Le nombre maximum de pommes que le joueur peut transporter.
+     */
     public int getMaxApples() {
         return maxApples;
     }
 
-    public void setMaxApples(int maxApples) {
-        this.maxApples = maxApples;
-    }
-
+    /**
+     * Augmente le niveau de peur du joueur d'un point.
+     */
     public void incrementFear() {
         fearLevel++;
     }
 
+    /**
+     * Diminue le niveau de peur du joueur d'un point.
+     */
     public void decrementFear() {
         if (fearLevel > 0)
             fearLevel--;
     }
 
+    /**
+     * @return Le niveau de peur du joueur.
+     */
     public int getFearLevel() {
         return fearLevel;
     }
 
-    public void setFearLevel(int fear_level) {
-        this.fearLevel = fear_level;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
+    /**
+     * @return La chambre actuelle où se trouve le joueur.
+     */
     public Room getCurrentRoom() {
         return currentRoom;
     }
 
+    /**
+     * Change la chambre actuelle du joueur.
+     *
+     * @param currentRoom La nouvelle chambre du joueur.
+     */
     public void setCurrentRoom(Room currentRoom) {
         this.currentRoom = currentRoom;
     }
 
+    /**
+     * @return Le nombre de clés que le joueur possède.
+     */
     public int getKeys() {
         return keys;
     }
 
+    /**
+     * Ajoute une clé au joueur.
+     */
     public void addKey() {
         this.keys++;
     }

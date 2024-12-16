@@ -1,7 +1,11 @@
 package game.rooms;
 
-import game.Player;
+import game.Game;
+import input.Parser;
 
+/**
+ * Classe représentant la pièce "Hall du manoir" du jeu.
+ */
 public class Hall extends Room {
 
     public Hall() {
@@ -9,13 +13,15 @@ public class Hall extends Room {
     }
 
     @Override
-    public void roomLoop(Player player) {
-
+    public void roomLoop(Game game) {
+        // Rien à faire ici
+        // Les commandes du Hall sont gérées dans la classe Game directement
     }
 
     @Override
     public void printRoom() {
 
+        Parser.clearScreen();
         System.out.println("Vous êtes dans le hall du manoir :\n");
 
         System.out.println("               +------------+");

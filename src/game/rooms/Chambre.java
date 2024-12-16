@@ -1,11 +1,26 @@
 package game.rooms;
 
+import game.Game;
 import game.Player;
+import input.Parser;
 
+/**
+ * Classe représentant la chambre du manoir.
+ */
 public class Chambre extends Room {
 
+    /**
+     * Indique si le bruit étrange a déjà été annoncé.
+     * Pour éviter de spammer le joueur avec des messages.
+     */
     private boolean announcedNoise;
+    /**
+     * Indique si l'araignée est toujours dans la pièce.
+     */
     private boolean spider;
+    /**
+     * Indique si la clé est toujours dans la pièce.
+     */
     private boolean key;
 
     public Chambre() {
@@ -17,63 +32,66 @@ public class Chambre extends Room {
     }
 
     @Override
-    public void roomLoop(Player player) {
+    public void roomLoop(Game game) {
 
+        Player player = game.getPlayer();
         super.setVisited(true);
 
         while (player.getCurrentRoom().equals(this)) {
-            if (!canAccess(player)) {
+
+            // Si la chambre est verrouillée, on ne permet pas au joueur d'y accéder.
+            if (this.isLocked(game)) {
                 super.setVisited(false);
                 System.out.println("\nVous ne pouvez pas accéder à cette pièce pour le moment.\n");
-                player.enterRoom(player.getGame().getHall());
-                player.getGame().waitForKey();
+                game.enterRoom(game.getHall());
+                game.waitForKey();
                 return;
             }
 
             printRoom();
-            player.getGame().printInterface();
+            game.printInterface();
             System.out.println("\nDéplacez-vous vers les élements de la pièce pour les inspecter.");
             System.out.println("(Gauche, Droite, Haut, Bas, Pomme)\n");
 
-            switch (player.getGame().waitForInput()) {
-                case GAUCHE:
+            switch (game.waitForInput()) {
+                case GAUCHE: // Commode avec une clé
                     System.out.println("Vous ouvrez le tiroir de la commode.");
                     if (key) {
                         key = false;
-                        System.out.println("Vous avez trouvé une clé!");
+                        System.out.println("Vous avez trouvé une clé!\n");
                         player.addKey();
-                        if (player.getKeys() >= player.getGame().getRequiredKeys()) {
+                        if (player.getKeys() >= game.getRequiredKeys()) {
                             System.out.println("Vous avez trouvé toutes les clés nécessaires pour ouvrir la porte du manoir!");
                             System.out.println("Revenez vers le Hall pour vous échapper!\n");
                         }
                     } else {
-                        System.out.println("Le tiroir est vide.");
+                        System.out.println("Le tiroir est vide.\n");
                     }
                     break;
-                case DROITE:
+                case DROITE: // Lit avec une araignée
                     System.out.println("Vous inspectez le lit.");
                     if (spider) {
                         spider = false;
                         player.incrementFear();
                         System.out.println("Boo! Une araignée se cachait sous le lit!");
-                        System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + player.getGame().getMaxFear() + " points de peur.\n");
-                        if (player.getFearLevel() >= player.getGame().getMaxFear())
+                        System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + game.getMaxFear() + " points de peur.\n");
+                        if (player.getFearLevel() >= game.getMaxFear())
                             return;
                     } else {
-                        System.out.println("Il n'y a rien sur le lit.");
+                        System.out.println("Il n'y a rien sur le lit.\n");
                     }
                     break;
                 case BAS:
-                    player.enterRoom(player.getGame().getHall());
+                    game.enterRoom(game.getHall());
                     return;
                 case POMME:
-                    player.eatApple();
+                    game.eatApple();
                     break;
                 default:
                     System.out.println("Il n'y rien d'intéressant dans cette direction.\n");
                     break;
             }
-            player.getGame().waitForKey();
+            game.waitForKey();
 
         }
 
@@ -81,6 +99,8 @@ public class Chambre extends Room {
 
     @Override
     public void printRoom() {
+
+        Parser.clearScreen();
 
         System.out.println("Vous êtes dans la chambre :\n");
 
@@ -97,16 +117,24 @@ public class Chambre extends Room {
     }
 
     @Override
-    public boolean canAccess(Player player) {
-        return player.getGame().getBibliotheque().hasVisited() &&
-                player.getGame().getCuisine().hasVisited() &&
-                player.getGame().getSousSol().hasVisited();
+    public boolean isLocked(Game game) {
+        return !(game.getBibliotheque().beenVisited() &&
+                game.getCuisine().beenVisited() &&
+                game.getSousSol().beenVisited());
     }
 
+    /**
+     * Indique si le bruit étrange a déjà été annoncé, pour ne pas spammer le joueur.
+     *
+     * @return true si le bruit a déjà été annoncé, false sinon.
+     */
     public boolean hasAnnouncedNoise() {
         return announcedNoise;
     }
 
+    /**
+     * Annonce un bruit étrange dans la chambre et incite le joueur à y jeter un coup d'oeil.
+     */
     public void announceNoise() {
         announcedNoise = true;
         System.out.println("\nAttention! Un bruit étrange vient de la chambre. Vous devriez y jeter un coup d'oeil immédiatement.\n");

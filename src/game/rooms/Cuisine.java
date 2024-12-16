@@ -1,33 +1,49 @@
 package game.rooms;
 
+import game.Game;
 import game.Player;
+import input.Parser;
 
+/**
+ * Classe représentant la pièce "Cuisine" du jeu.
+ */
 public class Cuisine extends Room {
 
+
     private int apples;
+    /**
+     * Indique si l'araignée est toujours dans la pièce.
+     */
     private boolean spider;
 
-    public Cuisine() {
+
+    /**
+     * Constructeur de la classe Cuisine.
+     *
+     * @param apples Le nombre de pommes dans le frigo.
+     */
+    public Cuisine(int apples) {
         super("Cuisine", "une cuisine sombre, mais peut-être utile.",
                 "Tout semble vide à priori, à part pour le frigo sur votre droite.");
-        apples = 3;
+        this.apples = apples;
         spider = true;
     }
 
     @Override
-    public void roomLoop(Player player) {
+    public void roomLoop(Game game) {
 
+        Player player = game.getPlayer();
         super.setVisited(true);
 
         while (player.getCurrentRoom().equals(this)) {
 
             printRoom();
-            player.getGame().printInterface();
+            game.printInterface();
             System.out.println("\nDéplacez-vous vers les élements de la pièce pour les inspecter.");
             System.out.println("(Gauche, Droite, Haut, Bas, Pomme)\n");
 
-            switch (player.getGame().waitForInput()) {
-                case DROITE:
+            switch (game.waitForInput()) {
+                case DROITE: // Frigo avec des pommes
                     System.out.println("Vous ouvrez le frigo.");
                     if (apples > 0) {
                         int applesTaken = 0;
@@ -52,30 +68,30 @@ public class Cuisine extends Room {
                     }
 
                     break;
-                case GAUCHE:
+                case GAUCHE: // Toile d'araignée
                     if (spider) {
                         spider = false;
                         player.incrementFear();
                         System.out.println("Vous avez mis le pied dans une toile d'araignée.");
                         System.out.println("Une araignée vous saute dessus!");
-                        System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + player.getGame().getMaxFear() + " points de peur.\n");
-                        if (player.getFearLevel() >= player.getGame().getMaxFear())
+                        System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + game.getMaxFear() + " points de peur.\n");
+                        if (player.getFearLevel() >= game.getMaxFear())
                             return;
                     } else {
                         System.out.println("Rien d'intéressant ici.\n");
                     }
                     break;
                 case BAS:
-                    player.enterRoom(player.getGame().getHall());
+                    game.enterRoom(game.getHall());
                     return;
                 case POMME:
-                    player.eatApple();
+                    game.eatApple();
                     break;
                 default:
                     System.out.println("Il n'y rien d'intéressant dans cette direction.\n");
                     break;
             }
-            player.getGame().waitForKey();
+            game.waitForKey();
 
         }
 
@@ -83,6 +99,8 @@ public class Cuisine extends Room {
 
     @Override
     public void printRoom() {
+        Parser.clearScreen();
+
         System.out.println("Vous êtes dans la cuisine :\n");
 
         System.out.println("           +------------+");
