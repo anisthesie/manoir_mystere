@@ -124,9 +124,9 @@ public class Game {
                     "   Pour s'échapper, j'ai cru comprendre qu'il fallait trouver deux clés. \n" +
                     "   Je ne sais pas où elles sont, j'espère tout de même que vous réussirez à les trouver. \n" +
                     "   Il y'a quelques pommes dans le manoir, elles vous aideront à garder votre calme. \n" +
-                    "   Mais attention, plus vous restez dans le manoir, plus vous aurez peur. \n" +
+                    "   Mais attention, il y'a plein d'araignées partout qui vous feront peur. \n" +
                     "   Si votre niveau de peur atteint 5, vous mourrez. \n" +
-                    "   Bonne chance.\n");
+                    "   Bonne chance à vous.\n");
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -140,7 +140,7 @@ public class Game {
         System.out.println("Votre niveau de peur : " + getPlayer().getFearLevel() + "/" + maxFear);
         System.out.println("Nombre de pommes restantes : " + getPlayer().getAppleCount() + "/" + getPlayer().getMaxApples());
         System.out.println("Nombre de clés trouvées : " + getPlayer().getKeys() + "/" + requiredKeys);
-        System.out.println("Votre pièce actuelle : " + getPlayer().getCurrentRoom().getName() + ", " + getPlayer().getCurrentRoom().getDescription() + ".\n");
+        System.out.println("\nVotre pièce actuelle : " + getPlayer().getCurrentRoom().getName() + ", " + getPlayer().getCurrentRoom().getDescription() + ".\n");
         System.out.println(player.getCurrentRoom().getHint());
     }
 

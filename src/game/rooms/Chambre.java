@@ -35,17 +35,24 @@ public class Chambre extends Room {
     public void roomLoop(Game game) {
 
         Player player = game.getPlayer();
-        super.setVisited(true);
 
         while (player.getCurrentRoom().equals(this)) {
 
             // Si la chambre est verrouillée, on ne permet pas au joueur d'y accéder.
             if (this.isLocked(game)) {
-                super.setVisited(false);
-                System.out.println("\nVous ne pouvez pas accéder à cette pièce pour le moment.\n");
+                System.out.println("\nLa porte de la chambre semble bloquée,");
+                System.out.println("vous ne pouvez pas entrer pour le moment.\n");
                 game.enterRoom(game.getHall());
                 game.waitForKey();
                 return;
+            }
+            // Si c'est la première fois que le joueur entre dans la chambre, on lui explique le bruit qu'il a entendu.
+            if(!super.beenVisited()) {
+                System.out.println("\nVous entrez dans la chambre. Le bruit étrange que vous avez entendu semble bien venir d'ici.");
+                System.out.println("C'était sûrement une chauve-souris ou un rat.");
+                System.out.println("Peu importe, la chambre est maintenant déverrouillée.\n");
+                game.waitForKey();
+                super.setVisited(true);
             }
 
             printRoom();
