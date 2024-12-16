@@ -15,14 +15,14 @@ public class Player {
     private int keys;
 
     /**
-     * Constructeur de la classe Player.
+     * Constructeur de la classe Player (joueur).
      *
      * @param apples Le nombre de pommes que le joueur commence la partie avec.
-     * @param fear_level Le niveau de peur du joueur dont le joueur commence la partie avec.
+     * @param fear_level Le niveau de peur dont le joueur commence la partie avec.
      * @param keys Le nombre de clés que le joueur possède quand la partie commence.
      * @param maxApples Le nombre maximum de pommes que le joueur peut transporter.
      * @param maxApplesBackpack Le nombre maximum de pommes que le joueur peut transporter avec un sac à dos.
-     * @param currentRoom La pièce dans laquelle le joueur se commence la partie.
+     * @param currentRoom La pièce dans laquelle le joueur commence la partie.
      */
     public Player(int apples, int fear_level, int keys, int maxApples, int maxApplesBackpack, Room currentRoom) {
         this.appleCount = apples;
@@ -56,7 +56,7 @@ public class Player {
     }
 
     /**
-     * @return {@code true} si le joueur a un sac à dos, {@code false} sinon.
+     * @return {@code true} si le joueur possède un sac à dos, {@code false} sinon.
      */
     public boolean hasBackpack() {
         return maxApples == maxApplesBackpack;
@@ -71,7 +71,7 @@ public class Player {
     }
 
     /**
-     * @return Le nombre maximum de pommes que le joueur peut transporter.
+     * @return Le nombre maximum de pommes que le joueur peut transporter actuellement.
      */
     public int getMaxApples() {
         return maxApples;

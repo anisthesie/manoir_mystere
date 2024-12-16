@@ -82,7 +82,7 @@ public class SousSol extends Room {
                         System.out.println("Vous avez mis le pied dans une toile d'araignée.");
                         System.out.println("Une araignée vous saute dessus!");
                         System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + game.getMaxFear() + " points de peur.\n");
-                        if (player.getFearLevel() >= game.getMaxFear())
+                        if (player.getFearLevel() >= game.getMaxFear()) // On arrête tout. Le joueur a perdu.
                             return;
                     } else {
                         System.out.println("Rien d'intéressant ici.\n");
@@ -95,7 +95,7 @@ public class SousSol extends Room {
                         System.out.println("Vous avez mis le pied dans une toile d'araignée.");
                         System.out.println("Une araignée vous saute dessus!");
                         System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + game.getMaxFear() + " points de peur.\n");
-                        if (player.getFearLevel() >= game.getMaxFear())
+                        if (player.getFearLevel() >= game.getMaxFear()) // On arrête tout. Le joueur a perdu.
                             return;
                     } else {
                         System.out.println("Rien d'intéressant ici.\n");

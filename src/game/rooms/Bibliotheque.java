@@ -5,7 +5,7 @@ import game.Player;
 import input.Parser;
 
 /**
- * Classe représentant la pièce de la bibliothèque.
+ * Classe représentant la pièce bibliothèque.
  */
 public class Bibliotheque extends Room {
 
@@ -66,7 +66,7 @@ public class Bibliotheque extends Room {
                         player.incrementFear();
                         System.out.println("Boo! Une araignée vous saute dessus!");
                         System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + game.getMaxFear() + " points de peur.\n");
-                        if (player.getFearLevel() >= game.getMaxFear())
+                        if (player.getFearLevel() >= game.getMaxFear()) // On arrête tout. Le joueur a perdu.
                             return;
                     } else {
                         System.out.println("L'armoire est vide.\n");
@@ -83,7 +83,7 @@ public class Bibliotheque extends Room {
                         } else {
                             System.out.println("Vous avez déjà trop de pommes, vous ne pouvez pas en prendre plus.\n");
                         }
-                        if (!player.hasBackpack())
+                        if (!player.hasBackpack()) // Indice pour indiquer au joueur qu'il peut trouver un sac à dos
                             System.out.println("Vous pouvez trouver un sac à dos pour transporter plus de pommes.\n");
 
                     } else {

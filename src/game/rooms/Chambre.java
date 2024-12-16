@@ -75,7 +75,7 @@ public class Chambre extends Room {
                         player.incrementFear();
                         System.out.println("Boo! Une araignée se cachait sous le lit!");
                         System.out.println("Vous avez maintenant " + player.getFearLevel() + "/" + game.getMaxFear() + " points de peur.\n");
-                        if (player.getFearLevel() >= game.getMaxFear())
+                        if (player.getFearLevel() >= game.getMaxFear()) // On arrête tout. Le joueur a perdu.
                             return;
                     } else {
                         System.out.println("Il n'y a rien sur le lit.\n");

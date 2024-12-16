@@ -19,11 +19,11 @@ public class Game {
     /**
      * Constructeur de la classe Game.
      *
-     * @param player Le joueur en question.
+     * @param player Le joueur de la partie.
      * @param rooms Un tableau de pièces.
      * @param maxFear Le niveau de peur maximum avant de perdre.
-     * @param parser Un objet {@link Parser} pour gérer les entrées du clavier.
      * @param requiredKeys Le nombre de clés nécessaires pour gagner.
+     * @param parser Un objet {@link Parser} pour gérer les entrées du clavier.
      */
     public Game(Player player, Room[] rooms, int maxFear, int requiredKeys, Parser parser) {
         this.player = player;
@@ -47,10 +47,10 @@ public class Game {
 
     /**
      * Boucle principale du jeu.
-     * Tant que le joueur n'a pas gagné et n'est pas mort, le jeu continue.
      */
     private void gameLoop() {
 
+        // Tant que le joueur n'a pas trouvé les clés et n'est pas mort, le jeu continue.
         while (getPlayer().getKeys() < requiredKeys && getPlayer().getFearLevel() < maxFear) {
 
             // Vérifier si un 'bruit étrange' a été entendu dans la chambre
@@ -61,13 +61,15 @@ public class Game {
                 waitForKey();
             }
 
-            getHall().printRoom();
+            // Affichage de l'interface du jeu
+            player.getCurrentRoom().printRoom();
             printInterface();
+
             System.out.println("\nPour vous déplacer, taper la direction souhaitée (Haut, Bas, Gauche, Droite).");
             System.out.println("Pour manger une pomme, taper Pomme.\n");
 
             // Attendre une entrée du joueur et agir en conséquence.
-            // la méthode waitForInput() vérifie si l'entrée est valide, donc on prend le résultat directement.
+            // La méthode waitForInput() vérifie déjà si l'entrée est valide, donc on prend le résultat directement.
             Command commande = waitForInput();
             switch (commande) {
                 case HAUT:
@@ -89,14 +91,13 @@ public class Game {
             }
 
         }
-        // On est sorti de la boucle principale, donc le jeu est terminé.
+        // On est sorti de la boucle principale, donc la partie est terminée.
 
         if (getPlayer().getKeys() >= requiredKeys) {
-            // Le joueur a trouvé toutes les clés
+            // Le joueur a trouvé toutes les clés et a gagné
             System.out.println("Félicitations! Vous avez trouvé les deux clés et avez réussi à vous échapper du manoir.");
-
         } else {
-            // Le joueur a atteint le niveau de peur maximum
+            // Le joueur a atteint le niveau de peur maximum et a perdu
             System.out.println("Vous avez eu trop peur et vous êtes mort.");
         }
 
@@ -117,7 +118,7 @@ public class Game {
             System.out.println("Ah tiens! Une lettre par terre. Vous la ramassez et lisez : \n");
             Thread.sleep(4000);
             System.out.println("    19/11/1994");
-            System.out.println("   Je suis Mr. Rumble Scott. Je suis enfermé dans ce manoir depuis maintenant une semaine. \n" +
+            System.out.println("   Je suis Mr. Rumble Scott. Je suis enfermé dans ce manoir depuis maintenant deux semaines. \n" +
                     "   Je n'ai pas réussi à trouver la sortie. Je suis terrifié.\n" +
                     "   Je vais laisser cette lettre, espérant aider le prochain malheureux à être coincé comme moi. \n" +
                     "   Pour s'échapper, j'ai cru comprendre qu'il fallait trouver deux clés. \n" +
@@ -182,6 +183,9 @@ public class Game {
      * Permet au joueur de manger une pomme.
      * Si le joueur a des pommes, il en mange une et diminue son niveau de peur.
      * Le jeu affiche un message d'erreur sinon.
+     *
+     * Le joueur peut manger une pomme même si son niveau de peur est déjà à zéro,
+     * comme manger une pomme pour le plaisir.
      */
     public void eatApple() {
         if(player.getAppleCount() > 0){

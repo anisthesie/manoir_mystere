@@ -11,18 +11,19 @@ public class Main {
 
     /**
      * Fonction principale de l'application.
-     * Demande au joueur une confirmation pour commencer la partie.
+     * Demande au joueur une confirmation avant de commencer la partie.
      */
     public static void main(String[] args) {
-        System.out.println("\nBienvenu au Manoir Mystère!\n " +
-                "Appuyer sur Entrer pour commencer la partie.\n");
+        System.out.println(
+                "\nBienvenu au Manoir Mystère!\n " +
+                "Appuyer sur Entrer pour commencer la partie.\n" );
 
         Parser parser = new Parser();
-        parser.getCommand(); // Attend que le joeur appuie sur Entrée
+        parser.getCommand(); // Attendre que le joueur appuie sur Entrée
 
 
         // Initialisation des variables de la partie (joueur, pièces, etc.)
-        // définit les valeurs de bases, pour être facilement modifiables
+        // définition des paramètres par défaut, pour être facilement modifiables
         int applesInFridge = 3;
         Room[] rooms = new Room[] {
                 new Hall(),
